@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+import { React, useState, useEffect } from 'react';
 import './App.css';
 
-function App() {
+export default function App() {
+  const [count, setCount] = useState(0);
+
+  const increase = () => {
+    setCount(prevCount => {
+      const newCount = Number(prevCount) + 1;
+      localStorage.setItem("count", newCount);
+      return newCount;
+    });
+  };
+
+  useEffect(() => {
+    const initialValue = localStorage.getItem("count");
+    if (initialValue) setCount(initialValue);
+  }, []);
+
+  console.log(localStorage.getItem("count"));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="counter">
+      <h1>Lighthall React Clicker Counter</h1>
+      <h2>Total Clicks:</h2>
+      <span className="counter_output">{count}</span>
+      <div className="btn_container">
+        <button className="control_btn" onClick={increase}>Click Here to Add!</button>
+      </div>
     </div>
   );
 }
-
-export default App;
